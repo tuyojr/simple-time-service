@@ -9,12 +9,12 @@ variable "tags" {
 
 variable "bucket_name" {
   description = "Bucket name for terraform backend"
-  type = string
-  default = "terraform-state"
+  type        = string
+  default     = "terraform-state"
 }
 
 variable "lock_table_name" {
   description = "Name for the dynamodb table"
-  type = string
-  default = "terraform-state-lock"
+  type        = string
+  default     = "terraform-state-lock"
 }
