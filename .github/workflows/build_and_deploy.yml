@@ -19,8 +19,8 @@ on:
       image_tag:
         description: "Optional Docker image tag (defaults to commit SHA)"
         required: false
-      deploy_backend:
-        description: 'Deploy backend infrastructure'
+      deploy_infra:
+        description: 'Deploy infrastructure'
         required: true
         default: true
         type: boolean
@@ -70,6 +70,9 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     needs: docker-build-and-push
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_infra == 'true')
 
     defaults:
       run:
