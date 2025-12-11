@@ -44,9 +44,11 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
 
 Then you should be able to access it from [http://localhost:8000/](http://localhost:8000/)
+
 ![localhost_access](./images/localhost_access.png)
 
 You can also access the documentation page as well by adding the `/docs` path:
+
 ![localhost_doc_access](./images/localhost_docs.png)
 
 ### Testing Locally WITH Docker
@@ -67,6 +69,7 @@ docker ps
 ![running_docker_container](./images/running_docker_container.png)
 
 You can also access the application on localhost, because of the port mapping. Notice the IP is same as that of the docker container.
+
 ![localhost_docker_access](./images/docker_access.png)
 
 Finally, create a [dockerhub account](https://hub.docker.com/) if you don't have one, and push your built image there (this will come in handy for running anywhere by anyone).
