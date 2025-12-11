@@ -41,6 +41,7 @@ jobs:
 
     outputs:
       image_tag: ${{ steps.docker.outputs.tag }}
+      image: ${{ steps.docker.outputs.image }}
 
     steps:
       - name: Checkout repo
@@ -76,7 +77,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       TF_ACTION: ${{ inputs.tf_action }}
-      TF_VAR_image_tag: ${{ needs.build_and_push_image.outputs.image_tag }}
+      TF_VAR_image_tag: ${{ needs.docker-build-and-push.outputs.image_tag }}
 
     steps:
       - name: Checkout repo
