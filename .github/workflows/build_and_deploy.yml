@@ -1,12 +1,12 @@
 name: Deploy SimpleTimeService
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
   workflow_dispatch:
     inputs:
       tf_action:
@@ -40,7 +40,6 @@ jobs:
       (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_app == 'true' && github.event.inputs.action == 'apply')
 
     outputs:
-      image_tag: ${{ steps.docker.outputs.tag }}
       image: ${{ steps.docker.outputs.image }}
 
     steps:
@@ -74,14 +73,14 @@ jobs:
 
     defaults:
       run:
-        working-directory: terraform/backend
+        working-directory: terraform/aws
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       TF_ACTION: ${{ inputs.tf_action }}
-      TF_VAR_image_tag: ${{ needs.docker-build-and-push.outputs.image_tag }}
+      TF_VAR_image: ${{ needs.docker-build-and-push.outputs.image }}
 
     steps:
       - name: Checkout repo
@@ -94,14 +93,31 @@ jobs:
 
       - name: Generate terraform.tfvars for backend
         run: |
+          echo "Replacing backend placeholders in provider.tf..."
+          
+          # Replace placeholders with actual values using sed
+          sed -i "s|BACKEND_BUCKET_NAME|${{ secrets.TF_VAR_BUCKET_NAME  }}|g" provider.tf
+          sed -i "s|BACKEND_REGION|${{ secrets.AWS_REGION }}|g" provider.tf
+          sed -i "s|BACKEND_DYNAMODB_TABLE|${{ secrets.TF_VAR_LOCK_TABLE_NAME }}|g" provider.tf
+          
+          echo "Updated provider.tf:"
+          cat provider.tf
+
           cat > terraform.tfvars << EOF
           aws_region      = "${{ secrets.AWS_REGION }}"
           tags = {
-            Org         = "${{ secrets.Org }}"
+            Org         = "${{ secrets.ORG }}"
             ManagedBy   = "Terraform"
+            Environment = "${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}"
           }
-          bucket_name     = "${{ secrets.TF_VAR_bucket_name }}"
-          lock_table_name = "${{ secrets.TF_VAR_lock_table_name }}"
+          project_name = "${{ secrets.TF_VAR_PROJECT_NAME }}"
+          vpc_cidr = "${{ secrets.TF_VAR_vpc_cidr }}"
+          container_image = "${{ env.TF_VAR_image }}"
+          container_port = 8000
+          task_cpu = 256
+          task_memory = 512
+          desired_count = 2
+          health_check_path = "/"
           EOF
           echo "Generated terraform.tfvars:"
           cat terraform.tfvars
@@ -117,9 +133,9 @@ jobs:
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        if: github.event.inputs.action != 'destroy'
+        if: github.event.inputs.tf_action != 'destroy'
         run: terraform apply -auto-approve tfplan
       
       - name: Terraform Destroy
-        if: github.event.inputs.action == 'destroy'
+        if: github.event.inputs.tf_action == 'destroy'
         run: terraform apply -auto-approve tfplan
