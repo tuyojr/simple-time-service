@@ -7,7 +7,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN useradd --create-home --shell /bin/bash particleuser
+RUN useradd --create-home --shell /bin/bash particleuser && \
+    chown -R particleuser:particleuser /app
+
 USER particleuser
 
 EXPOSE 8000
