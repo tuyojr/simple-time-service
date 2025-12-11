@@ -1,0 +1,2 @@
+bucket_name = "name-of-your-bucket"
+lock_table_name = "name-of-your-lock-table"
