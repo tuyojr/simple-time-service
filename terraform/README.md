@@ -47,4 +47,4 @@ terraform apply
 
 | LOADBALANCER TARGET I | LOADBALANCER TARGET II |
 |:---------------------:|:----------------------:|
- ![loadbalancer_target_I](./aws/images/loadbalancer_target_I.png) | ![loadbalancer_target_II](./aws/images/loadbalancer_target_II.png) |
+| ![loadbalancer_target_I](./aws/images/loadbalancer_target_I.png) | ![loadbalancer_target_II](./aws/images/loadbalancer_target_II.png) |
