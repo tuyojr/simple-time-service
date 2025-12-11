@@ -86,3 +86,9 @@ docker push <dockerhub_username>/simpletimeservice:v1.0.0
 ```
 
 ![pushed_docker_image](./images/pushed_docker_image)
+
+There's also an existing docker image on Docker Hub that you can pull and test with from the get go.
+
+```SHELL
+docker pull tuyojr/simpletimeservice:v1.0.0
+```
