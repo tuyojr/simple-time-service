@@ -62,7 +62,7 @@ jobs:
           TAG="${{ inputs.image_tag || github.sha }}"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
-          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/simple-time-service:${TAG}"
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/simpletimeservice:${TAG}"
 
           docker build -t "$IMAGE" ./app
 
