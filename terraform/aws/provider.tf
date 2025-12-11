@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 1.14.0"
 
   backend "s3" {
-    bucket         = "particle41-backend"
+    bucket         = "BACKEND_BUCKET_NAME"
     key            = "terraform/state"
-    region         = "us-east-1"
-    dynamodb_table = "particle41-lock-table"
+    region         = "BACKEND_REGION"
+    dynamodb_table = "BACKEND_DYNAMODB_TABLE"
   }
 
   required_providers {
