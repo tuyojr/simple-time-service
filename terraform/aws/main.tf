@@ -165,7 +165,7 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type                        = "FARGATE"
   scheduling_strategy                = "REPLICA"
   platform_version                   = "LATEST"
-  wait_for_steady_state              = true
+#   wait_for_steady_state              = true
 
   network_configuration {
     subnets          = module.vpc.private_subnets
