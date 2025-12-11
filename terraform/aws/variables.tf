@@ -8,8 +8,8 @@ variable "tags" {
   description = "A map of tags to apply to resources."
   type        = map(string)
   default = {
-    Org       = "Particle41"
-    ManagedBy = "terraform"
+    Org         = "Particle41"
+    ManagedBy   = "terraform"
     Environment = "dev"
   }
 }

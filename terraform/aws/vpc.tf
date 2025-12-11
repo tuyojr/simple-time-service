@@ -20,8 +20,8 @@ module "vpc" {
   enable_nat_gateway     = true
   single_nat_gateway     = true
   one_nat_gateway_per_az = false
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  enable_dns_hostnames   = true
+  enable_dns_support     = true
 
   public_subnet_tags = merge(var.tags, {
     "Type" = "Public"
@@ -65,10 +65,10 @@ resource "aws_security_group" "ecs_tasks" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ecs_tasks_ingress" {
-  security_group_id = aws_security_group.ecs_tasks.id
-  from_port         = var.container_port
-  ip_protocol       = "tcp"
-  to_port           = var.container_port
+  security_group_id            = aws_security_group.ecs_tasks.id
+  from_port                    = var.container_port
+  ip_protocol                  = "tcp"
+  to_port                      = var.container_port
   referenced_security_group_id = aws_security_group.alb_sg.id
 }
 
