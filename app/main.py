@@ -23,5 +23,5 @@ async def get_time_and_ip(request: Request) -> TimeResponse:
         ip=get_client_ip(request),
     )
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
