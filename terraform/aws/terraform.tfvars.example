@@ -1,0 +1,14 @@
+aws_region = "us-west-2"
+tags = {
+  Org       = "Your Org"
+  ManagedBy = "You"
+  Environment = "staging"
+}
+project_name = "my-project"
+vpc_cidr = "172.1.0.0/16"
+container_image = "tuyojr/simpletimeservice:v1.0.0"
+container_port = 5000
+task_cpu = 256
+task_memory = 512
+desired_count = 10
+health_check_path = "/docs"
