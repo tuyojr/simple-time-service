@@ -5,7 +5,7 @@ import uvicorn
 
 app = FastAPI(
     title="SimpleTimeService",
-    description="A simple particle41 microservice that returns the current timestamp and visitor IP.",
+    description="A simple Particle41 microservice that returns the current timestamp and visitor IP.",
     version="1.0.0",
 )
 
@@ -14,9 +14,6 @@ class TimeResponse(BaseModel):
     ip: str
 
 def get_client_ip(request: Request) -> str:
-    forwarded_for = request.headers.get("x-forwarded-for")
-    if forwarded_for:
-        return forwarded_for
     return request.client.host if request.client else "unknown"
 
 @app.get("/", response_model=TimeResponse)
