@@ -37,3 +37,27 @@ variable "container_port" {
   type        = number
   default     = 8080
 }
+
+variable "task_cpu" {
+  description = "CPU units for the ECS task"
+  type        = number
+  default     = 256
+}
+
+variable "task_memory" {
+  description = "Memory for the ECS task"
+  type        = number
+  default     = 512
+}
+
+variable "desired_count" {
+  description = "Desired number of ECS tasks"
+  type        = number
+  default     = 1
+}
+
+variable "health_check_path" {
+  description = "Health check path for the ALB target group"
+  type        = string
+  default     = "/"
+}
