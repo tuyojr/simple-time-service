@@ -40,7 +40,7 @@ jobs:
       (github.event_name == 'workflow_dispatch' && github.event.inputs.tf_action == 'apply')
 
     outputs:
-      image: ${{ steps.docker.outputs.image }}
+      tag: ${{ steps.docker.outputs.tag }}
 
     steps:
       - name: Checkout repo
@@ -61,7 +61,7 @@ jobs:
           TAG="${{ inputs.image_tag || github.sha }}"
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/simpletimeservice:${TAG}"
           
-          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           
           docker build -t "$IMAGE" ./app
           docker push "$IMAGE"
@@ -93,7 +93,7 @@ jobs:
 
       - name: Configure backend and generate tfvars
         env:
-          IMAGE: ${{ needs.docker-build-and-push.outputs.image }}
+          TAG: ${{ needs.docker-build-and-push.outputs.tag }}
         run: |
           echo "Replacing backend placeholders in provider.tf..."
           
@@ -113,7 +113,7 @@ jobs:
           }
           project_name      = "${{ secrets.TF_VAR_PROJECT_NAME }}"
           vpc_cidr          = "${{ secrets.TF_VAR_vpc_cidr }}"
-          container_image   = "${IMAGE}"
+          container_image   = "${{ secrets.DOCKERHUB_USERNAME }}/simpletimeservice:${TAG}"
           container_port    = 8000
           task_cpu          = 256
           task_memory       = 512
